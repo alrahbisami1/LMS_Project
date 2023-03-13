@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BOL.Data
 {
-    public partial class LMSDBContext : IdentityDbContext
+    public partial class LMSDB_identityContext : IdentityDbContext
     {
-        public LMSDBContext()
+        public LMSDB_identityContext()
         {
         }
 
-        public LMSDBContext(DbContextOptions<LMSDBContext> options)
+        public LMSDB_identityContext(DbContextOptions<LMSDB_identityContext> options)
             : base(options)
         {
         }
@@ -28,7 +28,7 @@ namespace BOL.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=LMSDB_identity;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=LMS_DB_identity;Trusted_Connection=True;");
             }
         }
 
@@ -38,25 +38,20 @@ namespace BOL.Data
             {
                 entity.HasIndex(e => e.CategoryId, "IX_Courses_CategoryId");
 
-                entity.HasIndex(e => e.TeacherId, "IX_Courses_TeacherId");
-
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Courses)
                     .HasForeignKey(d => d.CategoryId);
-
-                entity.HasOne(d => d.Teacher)
-                    .WithMany(p => p.Courses)
-                    .HasForeignKey(d => d.TeacherId);
             });
 
             modelBuilder.Entity<File>(entity =>
             {
-                entity.HasIndex(e => e.LectureId, "IX_Files_LectureId")
-                    .IsUnique();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
-                entity.HasOne(d => d.Lecture)
+                entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.File)
-                    .HasForeignKey<File>(d => d.LectureId);
+                    .HasForeignKey<File>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Files_Lectures");
             });
 
             modelBuilder.Entity<Lecture>(entity =>
@@ -78,23 +73,25 @@ namespace BOL.Data
 
                 entity.Property(e => e.UserName).HasMaxLength(100);
 
-                entity.HasMany(d => d.CoursesNavigation)
-                    .WithMany(p => p.Students)
+                entity.HasMany(d => d.Courses)
+                    .WithMany(p => p.Users)
                     .UsingEntity<Dictionary<string, object>>(
-                        "StudentCourse",
-                        l => l.HasOne<Course>().WithMany().HasForeignKey("CourseId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_StudentCourses_Courses"),
-                        r => r.HasOne<User>().WithMany().HasForeignKey("StudentId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_StudentCourses_Users"),
+                        "UserCourse",
+                        l => l.HasOne<Course>().WithMany().HasForeignKey("CourseId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_UserCourses_Courses"),
+                        r => r.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_UserCourses_Users"),
                         j =>
                         {
-                            j.HasKey("StudentId", "CourseId");
+                            j.HasKey("UserId", "CourseId");
 
-                            j.ToTable("StudentCourses");
+                            j.ToTable("UserCourses");
+
+                            j.HasIndex(new[] { "CourseId" }, "IX_StudentCourses_CourseId");
                         });
             });
 
             base.OnModelCreating(modelBuilder);
         }
 
-        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+       // partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

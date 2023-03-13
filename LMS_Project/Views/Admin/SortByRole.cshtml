@@ -1,0 +1,30 @@
+﻿@model IEnumerable<IdentityUser>
+@using Microsoft.AspNetCore.Identity;
+@{
+    ViewData["Title"] = "SortByRole";
+}
+
+<h1>SortByRole</h1>
+
+<a asp-action="AssignRole">Assign Role</a>
+<form asp-action="SortByRole">
+    <div class="form-group mb-2">
+        <select asp-items="ViewBag.RoleId" name="RoleId" class="form-control"
+                onchange="this.form.submit()">
+            <option value="null">-Select Role-</option>
+        </select>
+    </div>
+</form>
+
+@if (Model != null)
+{
+    <dl>
+        @foreach (var item in Model)
+        {
+
+
+            <dt>@item.Email</dt>
+
+        }
+    </dl>
+}
