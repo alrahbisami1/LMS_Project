@@ -22,6 +22,6 @@ namespace BOL
 
         List<Course> GetCoursesbyCatId(int catId);
 
-        //List <Course> GetuserCourses();
+        List<Course> GetuserCourses();
     }
 }
