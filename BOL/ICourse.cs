@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+//using CourseCat = BOL.Data.Category;
 
 namespace BOL
 {
@@ -18,5 +19,9 @@ namespace BOL
         Course GetCourseById(int id);
 
         List<Course> GetAllCourses();
+
+        List<Course> GetCoursesbyCatId(int catId);
+
+        List <Course> GetuserCourses();
     }
 }
