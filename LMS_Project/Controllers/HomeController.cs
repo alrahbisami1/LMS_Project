@@ -19,12 +19,7 @@ namespace LMS_Project.Controllers
             return View();
         }
 
-        public IActionResult filter()
-        {
-
-            return View();
-        }
-
+       
         public IActionResult Privacy()
         {
             return View();
