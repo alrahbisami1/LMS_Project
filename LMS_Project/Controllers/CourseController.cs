@@ -10,7 +10,7 @@ namespace LMS_Project.Controllers
         private readonly IUser _iuser;
         public CourseController(ICourse icourse, IUser iuser)
         {
-            this._icourse = icourse;
+            _icourse = icourse;
             _iuser = iuser;
         }
 
