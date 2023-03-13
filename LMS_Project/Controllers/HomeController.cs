@@ -15,6 +15,13 @@ namespace LMS_Project.Controllers
 
         public IActionResult Index()
         {
+
+            return View();
+        }
+
+        public IActionResult filter()
+        {
+
             return View();
         }
 
