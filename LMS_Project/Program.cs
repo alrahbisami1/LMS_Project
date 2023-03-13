@@ -16,11 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var str = builder.Configuration.GetConnectionString("constr");
-builder.Services.AddDbContext<LMSDBContext>(Options => Options.UseSqlServer(str));
+builder.Services.AddDbContext<LMSDB_identityContext>(Options => Options.UseSqlServer(str));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<LMSDBContext>();
+    .AddEntityFrameworkStores<LMSDB_identityContext>();
 builder.Services.AddControllersWithViews();
 
 //================================

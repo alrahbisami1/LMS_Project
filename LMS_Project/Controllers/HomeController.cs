@@ -1,16 +1,21 @@
 ﻿using LMS_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using BOL.Data;
+using BOL;
 
 namespace LMS_Project.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUser _user;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(UserManager<IdentityUser> userManager, IUser user)
         {
-            _logger = logger;
+            this._userManager = userManager;
+            _user = user;
         }
 
         public IActionResult Index()
@@ -18,8 +23,28 @@ namespace LMS_Project.Controllers
 
             return View();
         }
+        public IActionResult CreateUser()
+        {
 
-       
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateUser(User user)
+        {
+            var name = User.Identity.Name;
+            var useridentity = _userManager.Users.FirstOrDefault(x => x.Email == name);
+
+            user.Id = Guid.Parse(useridentity.Id);
+            user.UserName = User.Identity.Name.ToString();
+            _user.Add(user);
+
+            return View();
+        }
+
+
+
+
+
         public IActionResult Privacy()
         {
             return View();

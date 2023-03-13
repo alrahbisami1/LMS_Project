@@ -11,9 +11,9 @@ namespace DAL
     public class CategoryDAL : ICategory  
     {
 
-        private readonly LMSDBContext _db;
+        private readonly LMSDB_identityContext _db;
 
-        public CategoryDAL(LMSDBContext db)
+        public CategoryDAL(LMSDB_identityContext db)
         {
             _db = db;
 
