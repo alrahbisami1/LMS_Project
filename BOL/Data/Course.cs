@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BOL.Data;
 
 namespace BOL.Data
 {
@@ -8,7 +9,7 @@ namespace BOL.Data
         public Course()
         {
             Lectures = new HashSet<Lecture>();
-            Users = new HashSet<User>();
+            UserCourses = new HashSet<UserCourse>();
         }
 
         public int Id { get; set; }
@@ -21,7 +22,6 @@ namespace BOL.Data
 
         public virtual Category Category { get; set; } = null!;
         public virtual ICollection<Lecture> Lectures { get; set; }
-
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UserCourse> UserCourses { get; set; }
     }
 }

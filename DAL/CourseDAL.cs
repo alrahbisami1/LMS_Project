@@ -46,10 +46,15 @@ namespace DAL
             return catCourses;
         }
 
-        public List<UserCourses> GetuserCourses()
+        public List<Course> GetuserCourses()
         {
-            return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
+            throw new NotImplementedException();
         }
+
+        //public List<UserCourses> GetuserCourses()
+        //{
+        //    return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
+        //}
 
         public void Update(Course course)
         {
