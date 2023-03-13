@@ -8,7 +8,6 @@ namespace BOL.Data
         public User()
         {
             Courses = new HashSet<Course>();
-            CoursesNavigation = new HashSet<Course>();
         }
 
         public Guid Id { get; set; }
@@ -18,7 +17,5 @@ namespace BOL.Data
         public bool IsTeacher { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }
-
-        public virtual ICollection<Course> CoursesNavigation { get; set; }
     }
 }

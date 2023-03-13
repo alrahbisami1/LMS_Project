@@ -8,8 +8,7 @@ namespace BOL.Data
         public int Id { get; set; }
         public string Description { get; set; } = null!;
         public string Path { get; set; } = null!;
-        public int LectureId { get; set; }
 
-        public virtual Lecture Lecture { get; set; } = null!;
+        public virtual Lecture IdNavigation { get; set; } = null!;
     }
 }

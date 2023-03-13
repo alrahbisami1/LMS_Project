@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "AssignRole";
+}
+
+<h1>AssignRole</h1>
+
+
+<form asp-action="AssignRole">
+    <div class="form-group mb-2">
+        <select asp-items="ViewBag.RoleId" name="RoleId" class="form-control">
+
+            <option value="null">-Select Role-</option>
+        </select>
+    </div>
+    <div class="form-group mb-2">
+        <select asp-items="ViewBag.UserId" name="UserId" class="form-control">
+
+            <option value="null">-Select User-</option>
+        </select>
+    </div>
+    <input type="submit" value="Assign" class="btn btn-success" />
+</form>
