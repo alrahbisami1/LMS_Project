@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace BOL.Data
+{
     public partial class Lecture
     {
         public int Id { get; set; }

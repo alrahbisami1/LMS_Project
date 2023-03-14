@@ -13,9 +13,9 @@ namespace DAL
     {
 
 
-        private readonly LMSDB_identityContext _db;
+        private readonly LMS_DB_identityContext _db;
 
-        public FileDAL(LMSDB_identityContext db)
+        public FileDAL(LMS_DB_identityContext db)
         {
             _db = db;
 

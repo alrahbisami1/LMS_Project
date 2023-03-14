@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BOL.Data
 {
-    public partial class LMS_DB_identityContext : DbContext
+    public partial class LMS_DB_identityContext : IdentityDbContext
     {
         public LMS_DB_identityContext()
         {
@@ -35,6 +36,9 @@ namespace BOL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+           
+         
+
             modelBuilder.Entity<Course>(entity =>
             {
                 entity.HasIndex(e => e.CategoryId, "IX_Courses_CategoryId");
@@ -92,7 +96,7 @@ namespace BOL.Data
                     .HasConstraintName("FK_UserCourses_Users1");
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

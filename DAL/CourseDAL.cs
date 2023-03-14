@@ -11,9 +11,9 @@ namespace DAL
 {
     public class CourseDAL : ICourse
     {
-        private readonly LMSDB_identityContext _db;
+        private readonly LMS_DB_identityContext _db;
 
-        public CourseDAL(LMSDB_identityContext db)
+        public CourseDAL(LMS_DB_identityContext db)
         {
             _db = db;
 
