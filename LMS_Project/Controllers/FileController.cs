@@ -2,8 +2,10 @@
 using BOL.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Drawing;
 using System.Security.Principal;
 using File = BOL.Data.File;
 
@@ -13,10 +15,12 @@ namespace LMS_Project.Controllers
     public class FileController : Controller
     {
         private readonly IFileData _fileData;
+        private readonly ILecture _lecture;
 
-        public FileController(IFileData fileData)
+        public FileController(IFileData fileData, ILecture lecture)
         {
             _fileData = fileData;
+            _lecture = lecture;
 
         }
         // GET: FileController
@@ -34,6 +38,7 @@ namespace LMS_Project.Controllers
         // GET: FileController/Create
         public ActionResult Create()
         {
+            ViewBag.LectureID = new SelectList(_lecture.GetAllLectures(), "Id", "Title");
             return View();
         }
 
@@ -44,28 +49,31 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                if (filepdf.ContentType == "file/pdf" || filepdf.ContentType == "file/docx")
+                var ff = filepdf.ContentType;
+                if (filepdf.ContentType == "application/pdf" || filepdf.ContentType == "application/docx")
                 {
                     var ext = Path.GetExtension(file.Path);
-                    using (FileStream fs =
-                        new FileStream("./wwwroot/files/" + getEmpInfo().Id + ext, FileMode.Create))
-                    {
-                        filepdf.CopyTo(fs);
-                        file.Id = getEmpInfo().Id;
-                        file.Name = getEmpInfo().Id + ext;
+                using (FileStream fs =
+                    new FileStream("./wwwroot/files/" + filepdf.FileName, FileMode.Create))
+                {
+                    filepdf.CopyTo(fs); //local
+                    //file.Id = getuserInfo().Id;
+                    file.Path = filepdf.FileName; // db
 
                     }
                     _fileData.Add(file);
+                    
 
+                return RedirectToAction("Details", new { id = file.Id });
+            }
 
-                    return RedirectToAction("Details", new { id = file.Id });
-                }
-                else
-                {
-                    ModelState.AddModelError("", "pdf or docx only Allowed");
-                    return View();
-                }
-                catch
+                 else
+            {
+                ModelState.AddModelError("", "pdf or docx only Allowed");
+                return View();
+            }
+            }
+            catch
             {
                 return View();
             } }
@@ -74,13 +82,14 @@ namespace LMS_Project.Controllers
         // GET: FileController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            //return old account record
+            var fle = _fileData.GetFileById(id);
+            return View(fle);
         }
 
         // POST: FileController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(File file, IFormFile filepdf)
         {
             try
             {
@@ -95,7 +104,7 @@ namespace LMS_Project.Controllers
         // GET: FileController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(_fileData.GetFileById(id));
         }
 
         // POST: FileController/Delete/5
@@ -113,7 +122,7 @@ namespace LMS_Project.Controllers
             }
         }
 
-        public User getEmpInfo()
+        public User getuserInfo()
         {
             var sesuser = HttpContext.Session.GetString("ses");
             var userinfo = JsonConvert.DeserializeObject<User>(sesuser);
