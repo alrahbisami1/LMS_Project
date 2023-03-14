@@ -10,9 +10,9 @@ namespace DAL
 {
     public class UserDAL : IUser
     {
-        private readonly LMSDB_identityContext _db;
+        private readonly LMS_DB_identityContext _db;
 
-        public UserDAL(LMSDB_identityContext db)
+        public UserDAL(LMS_DB_identityContext db)
         {
             _db = db;
 

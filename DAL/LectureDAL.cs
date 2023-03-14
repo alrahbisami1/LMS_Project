@@ -10,9 +10,9 @@ namespace DAL
 {
     public class LectureDAL : ILecture
     {
-        private readonly LMSDB_identityContext _db;
+        private readonly LMS_DB_identityContext _db;
 
-        public LectureDAL(LMSDB_identityContext db)
+        public LectureDAL(LMS_DB_identityContext db)
         {
             _db = db;
 
