@@ -16,11 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var str = builder.Configuration.GetConnectionString("constr");
-builder.Services.AddDbContext<LMSDB_identityContext>(Options => Options.UseSqlServer(str));
+builder.Services.AddDbContext<LMS_DB_identityContext>(Options => Options.UseSqlServer(str));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<LMSDB_identityContext>();
+    .AddEntityFrameworkStores<LMS_DB_identityContext>();
 builder.Services.AddControllersWithViews();
 
 //================================
@@ -33,6 +33,12 @@ builder.Services.AddScoped<IUser, UserDAL>();
 
 //=============================
 
+builder.Services.AddSession(Option =>
+{
+    Option.IdleTimeout = TimeSpan.FromSeconds(1000);
+});
+
+//=============================
 
 
 var app = builder.Build();
