@@ -2,6 +2,7 @@
 using BOL.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMS_Project.Controllers
@@ -10,10 +11,11 @@ namespace LMS_Project.Controllers
     {
 
         private readonly ILecture _context;
-
-        public LectureController(ILecture context)
+        private readonly ICourse _course;
+        public LectureController(ILecture context, ICourse course)
         {
             _context = context;
+            _course = course;
         }
 
         // GET: LectureController
@@ -23,6 +25,7 @@ namespace LMS_Project.Controllers
         }
 
         // GET: LectureController/Details/5
+        [HttpGet]
         public ActionResult Details(int id)
         {
             if (id == null)
@@ -42,17 +45,18 @@ namespace LMS_Project.Controllers
         // GET: LectureController/Create
         public ActionResult Create()
         {
+            ViewBag.CourseId = new SelectList(_course.GetAllCourses(), "Id", "Name");
             return View();
         }
 
         // POST: LectureController/Create
         [HttpPost]
 
-        public ActionResult Create([Bind("Id,Title,Content")] Lecture lecture)
+        public ActionResult Create(Lecture lecture)
         {
-
+        
             _context.Add(lecture);
-            return RedirectToAction(nameof(Index));
+            return View();
 
 
         }
@@ -67,6 +71,7 @@ namespace LMS_Project.Controllers
             }
 
             var lecture =  _context.GetLectureById(id);
+            ViewBag.CourseId = new SelectList(_course.GetAllCourses(), "Id", "Name");
             if (lecture == null)
             {
                 return NotFound();
@@ -77,15 +82,14 @@ namespace LMS_Project.Controllers
         // POST: LectureController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, [Bind("Id,Title,Content")] Lecture lecture)
+        public ActionResult Edit(int id,Lecture lecture)
         {
             if (id != lecture.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+         
                 try
                 {
                     _context.Update(lecture);
@@ -103,8 +107,7 @@ namespace LMS_Project.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(lecture);
+           
         }
 
         // GET: LectureController/Delete/5

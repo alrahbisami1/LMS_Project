@@ -39,7 +39,7 @@ namespace LMS_Project.Controllers
 
         // POST: FileController/Create
         [HttpPost]
-        
+
         public ActionResult Create(File file, IFormFile filepdf)
         {
             try
@@ -56,7 +56,7 @@ namespace LMS_Project.Controllers
 
                     }
                     _fileData.Add(file);
-                    
+
 
                     return RedirectToAction("Details", new { id = file.Id });
                 }
@@ -68,7 +68,7 @@ namespace LMS_Project.Controllers
                 catch
             {
                 return View();
-            }
+            } }
         }
 
         // GET: FileController/Edit/5

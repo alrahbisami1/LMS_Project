@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\Lecture\**" />
-    <Content Remove="Views\Lecture\**" />
-    <EmbeddedResource Remove="Views\Lecture\**" />
-    <None Remove="Views\Lecture\**" />
+    <None Include="Views\Lecture\Delete.cshtml" />
+    <None Include="Views\Lecture\Details.cshtml" />
+    <None Include="Views\Lecture\Edit.cshtml" />
+    <None Include="Views\Lecture\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
