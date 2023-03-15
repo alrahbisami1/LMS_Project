@@ -43,9 +43,9 @@ namespace DAL
 
        
 
-        public Course GetCourseById(int cid)
+        public Course GetCourseById(int id)
         {
-            return _db.Courses.Find(cid);
+            return _db.Courses.Find(id);
         }
 
         public List<Course> GetCoursesbyCatId(int catId)

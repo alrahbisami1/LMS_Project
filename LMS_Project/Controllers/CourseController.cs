@@ -30,14 +30,15 @@ namespace LMS_Project.Controllers
 
         }
         //============================================
-        public IActionResult Details(int cid)
+        public IActionResult Details(int id)
         {
-            if (cid == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var course = _icourse.GetCourseById(cid);
+            var course = _icourse.GetCourseById(id);
+            ViewBag.CategoryId = new SelectList(_icategory.GetAllCategories(), "Id", "Name");
             if (course == null)
             {
                 return NotFound();
@@ -69,14 +70,14 @@ namespace LMS_Project.Controllers
 
         }
         //================================================
-        public IActionResult Edit(int cid)
+        public IActionResult Edit(int id)
         {
-            if (cid == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var course = _icourse.GetCourseById(cid);
+            var course = _icourse.GetCourseById(id);
             ViewBag.CategoryId = new SelectList(_icategory.GetAllCategories(), "Id", "Name");
             if (course == null)
             {
@@ -87,9 +88,9 @@ namespace LMS_Project.Controllers
 
        
         [HttpPost]
-        public IActionResult Edit(int cid, Course course)
+        public IActionResult Edit(int id, Course course)
         {
-            if (cid != course.Id)
+            if (id != course.Id)
             {
                 return NotFound();
             }
@@ -101,7 +102,7 @@ namespace LMS_Project.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (CourseExists(cid) == null)
+                if (CourseExists(id) == null)
                 {
                     return NotFound();
                 }
@@ -121,21 +122,21 @@ namespace LMS_Project.Controllers
         }
         //=================================================
 
-        private Course CourseExists(int cid)
+        private Course CourseExists(int id)
         {
-            return _icourse.GetCourseById(cid);
+            return _icourse.GetCourseById(id);
         }
 
         //====================================================
 
-        public IActionResult Delete(int cid)
+        public IActionResult Delete(int id)
         {
-            if (cid == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var course = _icourse.GetCourseById(cid);
+            var course = _icourse.GetCourseById(id);
             if (course == null)
             {
                 return NotFound();
@@ -147,13 +148,13 @@ namespace LMS_Project.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         //[ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int cid)
+        public IActionResult DeleteConfirmed(int id)
         {
             
-            var course =  _icourse.GetCourseById(cid);
+            var course =  _icourse.GetCourseById(id);
             if (course != null)
             {
-                _icourse.Delete(cid);
+                _icourse.Delete(course);
             }
 
 
