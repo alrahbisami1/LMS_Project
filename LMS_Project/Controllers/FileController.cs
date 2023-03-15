@@ -60,11 +60,10 @@ namespace LMS_Project.Controllers
                                             //file.Id = getuserInfo().Id;
                         file.Path = filepdf.FileName; // db
 
-                }
-                _fileData.Add(file);
+                    }
+                    _fileData.Add(file);
 
-
-                    return RedirectToAction("Details", new { id = file.Id });
+                    return RedirectToAction("Index", new { id = file.Id });
                 }
 
                 else
@@ -76,7 +75,8 @@ namespace LMS_Project.Controllers
             catch
             {
                 return View();
-            } }
+            }
+        }
         // GET: FileController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -110,7 +110,7 @@ namespace LMS_Project.Controllers
 
                 }
                 _fileData.Update(file);
-                return RedirectToAction("Details", new { id = file.Id });
+                return RedirectToAction("Index", new { id = file.Id });
             }
 
             catch
@@ -133,7 +133,7 @@ namespace LMS_Project.Controllers
             try
             {
                 var fle = _fileData.GetFileById(id);
-                System.IO.File.Delete("./wwwroot/images/" + fle.Path);
+                System.IO.File.Delete("./wwwroot/files/" + fle.Path);
                 _fileData.Delete(fle);
                 return RedirectToAction("Index");
             }

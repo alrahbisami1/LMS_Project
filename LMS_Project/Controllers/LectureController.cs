@@ -9,7 +9,6 @@ namespace LMS_Project.Controllers
 {
     public class LectureController : Controller
     {
-
         private readonly ILecture _context;
         private readonly ICourse _course;
         public LectureController(ILecture context, ICourse course)
@@ -33,7 +32,6 @@ namespace LMS_Project.Controllers
             {
                 return NotFound();
             }
-
             var lecture = _context.GetLectureById(id);
             if (lecture == null)
             {
@@ -55,17 +53,13 @@ namespace LMS_Project.Controllers
 
         public ActionResult Create(Lecture lecture)
         {
-
             _context.Add(lecture);
             return RedirectToAction(nameof(Index));
-
-
         }
 
         // GET: LectureController/Edit/5
         public ActionResult Edit(int id)
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -89,12 +83,9 @@ namespace LMS_Project.Controllers
             {
                 return NotFound();
             }
-
-         
                 try
                 {
                     _context.Update(lecture);
-
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -108,18 +99,15 @@ namespace LMS_Project.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-           
         }
 
         // GET: LectureController/Delete/5
         public ActionResult Delete(int id)
         {
-
             if (id == null)
             {
                 return NotFound();
             }
-
             var lecture =  _context.GetLectureById(id);
             if (lecture == null)
             {
@@ -131,7 +119,7 @@ namespace LMS_Project.Controllers
 
         // POST: LectureController/Delete/5
         [HttpPost , ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+     
         public ActionResult DeleteConfirmed(int id)
         {
             var lecture = _context.GetLectureById(id);
@@ -139,12 +127,8 @@ namespace LMS_Project.Controllers
             {
                 _context.Delete(lecture);
             }
-
-
             return RedirectToAction(nameof(Index));
         }
-
-
         private Lecture LectureExists(int id)
         {
             return _context.GetLectureById(id);
