@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Views\Lecture\Delete.cshtml" />
-    <None Include="Views\Lecture\Details.cshtml" />
-    <None Include="Views\Lecture\Edit.cshtml" />
-    <None Include="Views\Lecture\Index.cshtml" />
+    <Compile Remove="Views\Lecture\**" />
+    <Content Remove="Views\Lecture\**" />
+    <EmbeddedResource Remove="Views\Lecture\**" />
+    <None Remove="Views\Lecture\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +38,14 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Lecture\Create.cshtml" />
+    <None Include="Views\Lecture\Delete.cshtml" />
+    <None Include="Views\Lecture\Details.cshtml" />
+    <None Include="Views\Lecture\Edit.cshtml" />
+    <None Include="Views\Lecture\Index.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -7,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.Security.Principal;
+using static System.Net.Mime.MediaTypeNames;
 using File = BOL.Data.File;
 
 namespace LMS_Project.Controllers
 {
-    
+
     public class FileController : Controller
     {
         private readonly IFileData _fileData;
@@ -49,29 +50,29 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                var ff = filepdf.ContentType;
+
                 if (filepdf.ContentType == "application/pdf" || filepdf.ContentType == "application/docx")
                 {
                     var ext = Path.GetExtension(file.Path);
-                using (FileStream fs =
-                    new FileStream("./wwwroot/files/" + filepdf.FileName, FileMode.Create))
+                    using (FileStream fs =
+                        new FileStream("./wwwroot/files/" + filepdf.FileName, FileMode.Create))
+                    {
+                        filepdf.CopyTo(fs); //local
+                                            //file.Id = getuserInfo().Id;
+                        file.Path = filepdf.FileName; // db
+
+                }
+                _fileData.Add(file);
+
+
+                    return RedirectToAction("Details", new { id = file.Id });
+                }
+
+                else
                 {
-                    filepdf.CopyTo(fs); //local
-                    //file.Id = getuserInfo().Id;
-                    file.Path = filepdf.FileName; // db
-
-                    }
-                    _fileData.Add(file);
-                    
-
-                return RedirectToAction("Details", new { id = file.Id });
-            }
-
-                 else
-            {
-                ModelState.AddModelError("", "pdf or docx only Allowed");
-                return View();
-            }
+                    ModelState.AddModelError("", "pdf or docx only Allowed");
+                    return View();
+                }
             }
             catch
             {
@@ -93,8 +94,28 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (filepdf != null) //check user if browse an image
+                {
+                    if (filepdf.ContentType == "application/pdf" || filepdf.ContentType == "application/docx")
+                    {
+                        var ext = Path.GetExtension(file.Path);
+                        using (FileStream fs =
+                            new FileStream("./wwwroot/files/" + filepdf.FileName, FileMode.Create))
+                        {
+                            filepdf.CopyTo(fs); //local
+
+                            file.Path = filepdf.FileName; // db
+
+                        }
+
+                    }
+
+
+                }
+                _fileData.Update(file);
+                return RedirectToAction("Details", new { id = file.Id });
             }
+
             catch
             {
                 return View();
@@ -114,7 +135,10 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var fle = _fileData.GetFileById(id);
+                System.IO.File.Delete("./wwwroot/images/" + fle.Path);
+                _fileData.Delete(fle);
+                return RedirectToAction("Index");
             }
             catch
             {

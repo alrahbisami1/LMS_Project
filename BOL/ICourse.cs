@@ -15,7 +15,8 @@ namespace BOL
         void Add(Course course);
         void Update(Course course);
         void Delete(Course course);
-        
+        void Delete(int id);
+
         Course GetCourseById(int id);
 
         List<Course> GetAllCourses();

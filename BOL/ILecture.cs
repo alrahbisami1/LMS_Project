@@ -17,5 +17,7 @@ namespace BOL
         Lecture GetLectureById(int id);
 
         List<Lecture> GetAllLectures();
+
+        public List<Course> GetAllCourses();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BOL;
 using BOL.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,12 @@ namespace DAL
         {
             _db.Lectures.Update(lecture);
             _db.SaveChanges();
+        }
+
+        public List<Course> GetAllCourses()
+        {
+
+            return _db.Courses.Include(x => x.Lectures).Include(x => x.UserCourses).ToList();
         }
     }
 }

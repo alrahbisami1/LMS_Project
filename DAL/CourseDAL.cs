@@ -30,6 +30,12 @@ namespace DAL
             _db.SaveChanges();
         }
 
+        public void Delete(int id)
+        {
+            _db.Courses.Remove(GetCourseById(id));
+            _db.SaveChangesAsync();
+        }
+
         public List<Course> GetAllCourses()
         {
             return _db.Courses.ToList();

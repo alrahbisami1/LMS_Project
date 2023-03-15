@@ -21,6 +21,7 @@ namespace LMS_Project.Controllers
         // GET: LectureController
         public ActionResult Index()
         {
+            ViewBag.CourseId = new SelectList(_course.GetAllCourses(), "Id", "Name");
             return View(_context.GetAllLectures());
         }
 
@@ -38,7 +39,7 @@ namespace LMS_Project.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.CourseId = new SelectList(_course.GetAllCourses(), "Id", "Name");
             return View(lecture);
         }
 
@@ -54,9 +55,9 @@ namespace LMS_Project.Controllers
 
         public ActionResult Create(Lecture lecture)
         {
-        
+
             _context.Add(lecture);
-            return View();
+            return RedirectToAction(nameof(Index));
 
 
         }
