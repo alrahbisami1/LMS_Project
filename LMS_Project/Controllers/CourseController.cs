@@ -77,6 +77,7 @@ namespace LMS_Project.Controllers
             }
 
             var course = _icourse.GetCourseById(cid);
+            ViewBag.CategoryId = new SelectList(_icategory.GetAllCategories(), "Id", "Name");
             if (course == null)
             {
                 return NotFound();
@@ -84,35 +85,39 @@ namespace LMS_Project.Controllers
             return View(course);
         }
 
+       
         [HttpPost]
         public IActionResult Edit(int cid, Course course)
         {
-            if (cid == null)
+            if (cid != course.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _icourse.Update(course);
+                _icourse.Update(course);
 
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (CourseExists(cid) == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
-            return View(course);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (CourseExists(cid) == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+          
+            }
+            return RedirectToAction(nameof(Index));
+           
+
+
+
+
+
         }
         //=================================================
 

@@ -41,9 +41,11 @@ namespace DAL
             return _db.Courses.ToList();
         }
 
-        public Course GetCourseById(int id)
+       
+
+        public Course GetCourseById(int cid)
         {
-            return _db.Courses.Find(id);
+            return _db.Courses.Find(cid);
         }
 
         public List<Course> GetCoursesbyCatId(int catId)
@@ -52,32 +54,10 @@ namespace DAL
             return catCourses;
         }
 
-        //public Course GetCoursesByuserId(int? cid, int? userid)
-        //{
-        //    var userCourse = _db.UserCourses.Where(x => x.UserId == userid).ToList();
-        //    return userCourse;
-        //}
-
-        public List<Course> GetCoursesbyUserId(Guid userid)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public List<Course> GetuserCourses()
-        //{
-        //    return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
-        //}
-
-        //public List<UserCourses> GetuserCourses()
-        //{
-        //    return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
-        //}
-
-
 
         public void Update(Course course)
         {
-            _db.Update(course);
+            _db.Courses.Update(course);
             _db.SaveChanges();
 
         }

@@ -23,9 +23,6 @@ namespace BOL
 
         List<Course> GetCoursesbyCatId(int catId);
 
-        //List<Course> GetuserCourses();
-
-        //Course GetCoursesByuserId(int? cid, int? userid);
-        //List<Course> GetCoursesbyUserId(Guid userid);
+      
     }
 }
