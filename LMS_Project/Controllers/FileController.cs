@@ -45,7 +45,6 @@ namespace LMS_Project.Controllers
 
         // POST: FileController/Create
         [HttpPost]
-
         public ActionResult Create(File file, IFormFile filepdf)
         {
             try
@@ -78,8 +77,6 @@ namespace LMS_Project.Controllers
             {
                 return View();
             } }
-        }
-
         // GET: FileController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -152,5 +149,7 @@ namespace LMS_Project.Controllers
             var userinfo = JsonConvert.DeserializeObject<User>(sesuser);
             return userinfo;
         }
+
+
     }
 }
