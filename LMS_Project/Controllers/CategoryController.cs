@@ -1,6 +1,8 @@
 ﻿using BOL;
+using BOL.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMS_Project.Controllers
@@ -44,59 +46,93 @@ namespace LMS_Project.Controllers
 
         // POST: CategoryController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+
+        public ActionResult Create(Category category)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _category.Add(category);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: CategoryController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = _category.GetCategoryById(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
         }
 
         // POST: CategoryController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+
+        public ActionResult Edit(int id, Category category)
         {
+            if (id != category.Id)
+            {
+                return NotFound();
+            }
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                _category.Update(category);
 
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (CategoryExists(id) == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
+        }
+        [HttpGet]
         // GET: CategoryController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = _category.GetCategoryById(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
         }
 
         // POST: CategoryController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
+            var category = _category.GetCategoryById(id);
+            if (category != null)
             {
-                return RedirectToAction(nameof(Index));
+                _category.Delete(category);
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        private Category CategoryExists(int id)
+        {
+            return _category.GetCategoryById(id);
         }
     }
 }
