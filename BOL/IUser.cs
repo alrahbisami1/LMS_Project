@@ -14,6 +14,8 @@ namespace BOL
         void Delete(User user);
        
         User GetUserById(int id);
+        void AssignUserCourse(Guid userid, int courseid);
+        List<UserCourse> GetAllUserCourses();
 
         List<User> GetAllUsers();
     }

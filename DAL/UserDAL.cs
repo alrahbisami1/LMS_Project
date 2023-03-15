@@ -1,5 +1,6 @@
 ﻿using BOL;
 using BOL.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,21 @@ namespace DAL
         {
            _db.Users.Update(user);
             _db.SaveChanges();
+        }
+
+        public void AssignUserCourse(Guid userid, int courseid)
+        {
+            
+            var assign = new UserCourse() { UserId = userid, CourseId = courseid };
+            _db.UserCourses.Add(assign);
+            _db.SaveChanges();
+        }
+
+        public List<UserCourse> GetAllUserCourses()
+        {
+            //Eager Loading
+            return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
+            //(Include) function dose not appere in tables that not contains FK
         }
     }
 }
