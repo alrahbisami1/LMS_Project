@@ -52,15 +52,28 @@ namespace DAL
             return catCourses;
         }
 
-        public List<Course> GetuserCourses()
+        //public Course GetCoursesByuserId(int? cid, int? userid)
+        //{
+        //    var userCourse = _db.UserCourses.Where(x => x.UserId == userid).ToList();
+        //    return userCourse;
+        //}
+
+        public List<Course> GetCoursesbyUserId(Guid userid)
         {
             throw new NotImplementedException();
         }
+
+        //public List<Course> GetuserCourses()
+        //{
+        //    return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
+        //}
 
         //public List<UserCourses> GetuserCourses()
         //{
         //    return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
         //}
+
+
 
         public void Update(Course course)
         {
