@@ -1,0 +1,11 @@
+﻿@model IEnumerable<BOL.Data.UserCourse>
+@{
+    ViewData["Title"] = "OwnCourse";
+}
+
+<h1>OwnCourse</h1>
+
+@foreach(var item in Model){
+    
+    <p> @item.Course.Name </p>
+}

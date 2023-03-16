@@ -10,13 +10,15 @@ namespace LMS_Project.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ICategory _category;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUser _user;
         private readonly ICourse _course;
 
-        public HomeController(UserManager<IdentityUser> userManager, IUser user, ICourse course)
+        public HomeController(ICategory category, UserManager<IdentityUser> userManager, IUser user, ICourse course)
         {
-            this._userManager = userManager;
+            _category = category;
+            _userManager = userManager;
             _user = user;
             _course = course;
         }
@@ -26,7 +28,50 @@ namespace LMS_Project.Controllers
 
             return View();
         }
-        public IActionResult CreateUser()
+        public IActionResult OwnCourse()
+        {
+            var name = User.Identity.Name;
+            var useridentity = _userManager.Users.FirstOrDefault(x => x.Email == name);
+            var uid = Guid.Parse(useridentity.Id);
+            var u = _user.GetAllUserCourses().Where(x => x.UserId == uid);
+            
+            return View(u);
+        }
+
+        public IActionResult StudentEnrollment(int id)
+        {
+            ViewBag.CategoryId = _category.GetAllCategories();
+            var model = new List<Course>(); //emptylist
+            if (User.Identity.IsAuthenticated )
+            {
+
+               var user= _user.GetAllUsers().SingleOrDefault(x => x.IsTeacher == false && x.UserName == User.Identity.Name);
+                if (id != null && id != 0)
+                {
+                    _user.AssignUserCourse(user.Id, id);
+                    ViewBag.msgsuccess = "User has been enrolled in the course!";
+
+                }
+
+
+               
+
+
+
+            }
+         
+            return View(model);
+        }
+
+        public IActionResult filtercourses(int id)
+        {
+            ViewBag.CategoryId = _category.GetAllCategories();
+
+            var model = _course.GetCoursesbyCatId(id);
+
+            return View("StudentEnrollment", model);
+        }
+            public IActionResult CreateUser()
         {
 
             return View();
@@ -48,7 +93,7 @@ namespace LMS_Project.Controllers
         public IActionResult ChooseCourses(Guid userid, int[] courseid, User user)
         {
 
-            ViewBag.UserId = new SelectList(_user.GetAllUsers(), "Id", "UserName");
+            ViewBag.UserId = new SelectList(_user.GetAllUsers().Where(x => x.IsTeacher==true), "Id", "UserName");
             ViewData["CourseId"] = new SelectList(_course.GetAllCourses(), "Id", "Name");
             if (user.IsTeacher == false && userid != null && courseid.Length > 0)
             {
