@@ -45,23 +45,24 @@ namespace LMS_Project.Controllers
         }
 
         //===============================
-        public IActionResult ChooseCourses(Guid userid, int[] courseid)
+        public IActionResult ChooseCourses(Guid userid, int[] courseid, User user)
         {
 
             ViewBag.UserId = new SelectList(_user.GetAllUsers(), "Id", "UserName");
             ViewData["CourseId"] = new SelectList(_course.GetAllCourses(), "Id", "Name");
-
-            if (userid != null && courseid.Length > 0)
+            if (user.IsTeacher == false && userid != null && courseid.Length > 0)
             {
                 foreach (var cid in courseid)
                 {
-                    //عبارة عن مصفوفة، ويتم فحصها في كل دورة للتحقق من عدد المدخلات فيها ProjectID
-                    //TeamProject بعدها يتم إضافة المدخلات في جدول 
+                    
                     _user.AssignUserCourse(userid, cid);
 
                 }
 
             }
+
+
+            
 
             var model = _user.GetAllUserCourses();
 
@@ -71,7 +72,10 @@ namespace LMS_Project.Controllers
 
         //==========================================
 
-
+        public IActionResult CourseHome()
+        {
+            return View(_course.GetAllCourses());
+        }
 
         public IActionResult Privacy()
         {
