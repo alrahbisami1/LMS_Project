@@ -3,6 +3,7 @@ using BOL.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -160,7 +161,21 @@ namespace LMS_Project.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        //=================================================
 
+        public IActionResult CatogryCourse(int id)
+        {
+
+            var catcourse = _icourse.GetCoursesbyCatId(id);
+            if (catcourse == null)
+            {
+                return RedirectToAction("index");
+            }
+
+
+            return View(catcourse);
+
+        }
 
 
 
