@@ -3,9 +3,100 @@
     ViewData["Title"] = "OwnCourse";
 }
 
-<h1>OwnCourse</h1>
 
-@foreach(var item in Model){
+
+@*@foreach(var item in Model){
     
     <p> @item.Course.Name </p>
-}
+    <p>------------------------------</p>
+   
+
+
+    @foreach (var item2 in item.Course.Lectures)
+    {
+        <h3> @item2.Title </h3>
+        <a asp-controller="Lecture" asp-action="Delete" asp-route-id="@item2.Id">Delete</a>
+
+    }
+    
+}*@
+<div class="text-center wow fadeInUp mt-5" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+    <h6 class="section-title bg-white text-center text-primary px-3">Courses</h6>
+    <h1 class="mb-5">My Courses</h1>
+</div>
+<table class="table table-bordered border-2">
+    <thead>
+        <tr>
+            <th>
+               Course Name
+            </th>
+            <th>
+                Start Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                More Details
+            </th>
+            <th>
+               Course Status
+            </th>
+            
+            <th>
+                Lectures Related to This Course 
+            </th>
+             
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            
+                <tr>
+                    <td>
+                        @item.Course.Name
+                    </td>
+                    <td>
+                       @item.Course.StartDate
+                    </td>
+                    <td>
+                       @item.Course.EndDate
+                    </td>
+                    <td>
+                    <a asp-controller="Course" asp-action="Details" asp-route-id="@item.Id">More Details</a>
+                    </td>
+                    <td>
+                    @if (item.Course.IsActive == true)
+                    {
+                        <b class="text-primary">Active</b>
+                    }
+                    else  
+                    {
+                        <b class="text-warning">Expired</b>
+                    }
+                    </td>
+                    <td>
+                    @foreach (var item2 in item.Course.Lectures)
+                    {
+                        @if (item2.Title != null)
+                        {
+                            <p> @item2.Title | <a asp-controller="Lecture" asp-action="Details" asp-route-id="@item2.Id">Details</a> </p>
+                            
+                        }
+  
+
+                    }
+                    </td>
+
+                    @*<td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>*@
+                </tr>
+            
+        }
+    </tbody>
+</table>
+

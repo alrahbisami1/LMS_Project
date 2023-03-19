@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<BOL.Data.UserCourse>
 @{
-    ViewData["Title"] = "ChooseCourses";
+    ViewData["Title"] = "Assign Courses To Teacher";
 }
 
 <h1>ChooseCourses</h1>
 
 <form asp-action="ChooseCourses">
-    <div class="container mb-3">
+    <div class="container mt-3">
 
         <div class="row d-flex flex-wrap g-3">
 
             <div class="col-6 shadow-sm p-3">
-                <h3><a asp-action="create">Create User</a></h3>
-                <h4>Users</h4>
+               
+                <h4>Teatcher Username</h4>
                 <select asp-items="ViewBag.UserId" class="form-control" name="UserId">
 
                     <option value="null">
@@ -36,49 +36,13 @@
                     }
                 </ul>
             </div>
-            <ul>
-                @foreach (var item in Model)
-                {
-                    <li>@item.Course.Description</li>
-                }
-            </ul>
 
             <div class="col-12 shadow-sm p-3">
                 <button class=" btn btn-primary w-100">
                     <i class="bi bi-plus-circle-fill"></i>
-                    Assign User Courses
+                    Assign Course To Teacher
                 </button>
             </div>
-
-
-
-            <table class="table table-bordered shadow-sm p-3">
-                <tr>
-                    <th>Course Name</th>
-                    <th>Course Desc</th>
-                    <th>Course StartDate</th>
-                    <th>Course EndDate</th>
-                    <th>Course Category</th>
-                    <th>Course IsActive</th>
-
-                </tr>
-
-
-            @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Course.Name</td>
-                        <td>@item.Course.Description</td>
-                        <td>@item.Course.StartDate</td>
-                        <td>@item.Course.EndDate</td>
-                        <td>@item.Course.CategoryId</td>
-                        <td>@item.Course.IsActive</td>
-                        
-
-                    </tr>
-
-                }
-            </table>
 
 
         </div>

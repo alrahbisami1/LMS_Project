@@ -1,14 +1,17 @@
 ﻿using BOL;
 using BOL.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Data;
 using System.IO;
 using System.Security.Cryptography;
 
 namespace LMS_Project.Controllers
 {
+    
     public class CourseController : Controller
     {
         private readonly ICourse _icourse;
@@ -20,7 +23,7 @@ namespace LMS_Project.Controllers
             _iuser = iuser;
             _icategory = icategory;
         }
-
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public IActionResult Index()
         {
             ViewBag.CategoryId = new SelectList(_icategory.GetAllCategories(), "Id", "Name");
@@ -31,6 +34,7 @@ namespace LMS_Project.Controllers
 
         }
         //============================================
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public IActionResult Details(int id)
         {
             if (id == null)
@@ -47,7 +51,7 @@ namespace LMS_Project.Controllers
 
             return View(course);
         }
-
+        [Authorize(Roles = "Admin")]
         //=============================================
         public IActionResult Create()
         {
@@ -57,6 +61,7 @@ namespace LMS_Project.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(Course course)
         {
             ViewBag.CategoryId = new SelectList(_icategory.GetAllCategories(), "Id", "Name");
@@ -71,6 +76,7 @@ namespace LMS_Project.Controllers
 
         }
         //================================================
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             if (id == null)
@@ -89,6 +95,7 @@ namespace LMS_Project.Controllers
 
        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id, Course course)
         {
             if (id != course.Id)
@@ -129,7 +136,7 @@ namespace LMS_Project.Controllers
         }
 
         //====================================================
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             if (id == null)
@@ -148,7 +155,7 @@ namespace LMS_Project.Controllers
 
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             
@@ -162,7 +169,7 @@ namespace LMS_Project.Controllers
             return RedirectToAction(nameof(Index));
         }
         //=================================================
-
+        [Authorize(Roles = "Admin")]
         public IActionResult CatogryCourse(int id)
         {
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "SortByRole";
 }
 
-<h1>SortByRole</h1>
+<h1 class="mt-4">Sort By Role</h1>
 
 <a asp-action="AssignRole">Assign Role</a>
 <form asp-action="SortByRole">
@@ -18,13 +18,13 @@
 
 @if (Model != null)
 {
-    <dl>
+    <ul>
         @foreach (var item in Model)
         {
 
 
-            <dt>@item.Email</dt>
+            <li>@item.Email</li>
 
         }
-    </dl>
+    </ul>
 }

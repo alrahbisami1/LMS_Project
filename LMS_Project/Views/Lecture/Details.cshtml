@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="mt-3">View Details</h1>
 
 <div>
-    <h4>Lecture</h4>
+    
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -33,6 +33,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Course.Description)
+        </dd>
+        <dt class="col-sm-2">
+            Details about Lecture File
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="File" asp-action="Details" asp-route-id="@Model.Id">More Details</a>
         </dd>
     </dl>
 </div>

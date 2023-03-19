@@ -1,9 +1,11 @@
 ﻿using BOL;
 using BOL.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace LMS_Project.Controllers
 {
@@ -42,6 +44,7 @@ namespace LMS_Project.Controllers
         }
 
         // GET: LectureController/Create
+        [Authorize(Roles = "Teacher")]
         public ActionResult Create()
         {
             ViewBag.CourseId = new SelectList(_course.GetAllCourses(), "Id", "Name");
@@ -50,7 +53,7 @@ namespace LMS_Project.Controllers
 
         // POST: LectureController/Create
         [HttpPost]
-
+        [Authorize(Roles = "Teacher")]
         public ActionResult Create(Lecture lecture)
         {
             _context.Add(lecture);
@@ -58,6 +61,7 @@ namespace LMS_Project.Controllers
         }
 
         // GET: LectureController/Edit/5
+        [Authorize(Roles = "Teacher")]
         public ActionResult Edit(int id)
         {
             if (id == null)
@@ -76,7 +80,7 @@ namespace LMS_Project.Controllers
 
         // POST: LectureController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public ActionResult Edit(int id,Lecture lecture)
         {
             if (id != lecture.Id)
@@ -102,6 +106,7 @@ namespace LMS_Project.Controllers
         }
 
         // GET: LectureController/Delete/5
+        [Authorize(Roles = "Teacher")]
         public ActionResult Delete(int id)
         {
             if (id == null)
@@ -119,7 +124,7 @@ namespace LMS_Project.Controllers
 
         // POST: LectureController/Delete/5
         [HttpPost , ActionName("Delete")]
-     
+        [Authorize(Roles = "Teacher")]
         public ActionResult DeleteConfirmed(int id)
         {
             var lecture = _context.GetLectureById(id);

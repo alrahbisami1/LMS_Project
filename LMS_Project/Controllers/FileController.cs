@@ -33,8 +33,19 @@ namespace LMS_Project.Controllers
         // GET: FileController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var LFile = _fileData.GetFileById(id);
+            if (LFile == null)
+            {
+                return NotFound();
+            }
+            //ViewBag.CourseId = new SelectList(_course.GetAllCourses(), "Id", "Name");
+            return View(LFile);
         }
+    
 
         // GET: FileController/Create
         public ActionResult Create()

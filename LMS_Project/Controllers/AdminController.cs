@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace LMS_Project.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -72,7 +75,7 @@ namespace LMS_Project.Controllers
                 await _userManager.AddToRoleAsync(user, s);
             }
 
-            return RedirectToAction("SortByRole");
+            return RedirectToAction();
         }
 
         public async Task<IActionResult> SortByRole(string RoleId)

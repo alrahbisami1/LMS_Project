@@ -4,12 +4,12 @@
     ViewData["Title"] = "StudentEnrollment";
 }
 
-<h1>StudentEnrollment</h1>
+<h1 class="mt-4 mb-3">Our Courses</h1>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-@foreach (var item in ViewBag.CategoryId)
+@*@foreach (var item in ViewBag.CategoryId)
 {
     <a asp-action="filtercourses" asp-route-id="@item.Id"> @item.Name  </a>
-}
+}*@
 @if (ViewBag.msgsuccess != null)
 {
     <h3>@ViewBag.msgsuccess</h3>
@@ -20,12 +20,17 @@
 {
 
 
-    <table class="table">
+    <table class="table table-bordered border-2">
         <tr>
 
             <th>Name</th>
             <th>Description</th>
-            <th></th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Course Status</th>
+            <th>Enroll</th>
+            
+
         </tr>
         @foreach (var crs in Model)
         {
@@ -33,6 +38,18 @@
 
                 <td>@crs.Name</td>
                 <td>@crs.Description</td>
+                <td>@crs.StartDate</td>
+                <td>@crs.EndDate</td>
+                <td>
+                    @if (crs.IsActive == true)
+                    {
+                        <b class="text-primary">Active</b>
+                    }
+                    else
+                    {
+                        <b class="text-warning">Expired</b>
+                    }
+                </td>
                 <td> <a asp-action="StudentEnrollment" asp-route-id="@crs.Id"> <i class="bi bi-box-arrow-right "></i>  </a>  </td>
             </tr>
         }

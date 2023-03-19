@@ -27,7 +27,7 @@ namespace DAL
 
         public void Delete(User user)
         {
-            _db.Users.Remove(user); 
+            _db.Users.Remove(user);
             _db.SaveChanges();
         }
 
@@ -43,13 +43,13 @@ namespace DAL
 
         public void Update(User user)
         {
-           _db.Users.Update(user);
+            _db.Users.Update(user);
             _db.SaveChanges();
         }
 
         public void AssignUserCourse(Guid userid, int courseid)
         {
-            
+
             var assign = new UserCourse() { UserId = userid, CourseId = courseid };
             _db.UserCourses.Add(assign);
             _db.SaveChanges();
@@ -58,8 +58,15 @@ namespace DAL
         public List<UserCourse> GetAllUserCourses()
         {
             //Eager Loading
-            return _db.UserCourses.Include(x => x.User).Include(y => y.Course).ToList();
+            return _db.UserCourses.Include(x => x.User).Include(y => y.Course)
+               .Include(z => z.Course.Lectures).ToList();
             //(Include) function dose not appere in tables that not contains FK
         }
+
+        public List<Lecture> GetUserLectureFiles()
+        {
+            return _db.Lectures.Include(x => x.File).Include(y=> y.Course).Include(z=> z.Course.UserCourses).ToList();
+        }
+
     }
 }

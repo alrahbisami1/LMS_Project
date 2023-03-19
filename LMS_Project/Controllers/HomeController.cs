@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using BOL.Data;
 using BOL;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace LMS_Project.Controllers
 {
@@ -25,27 +27,51 @@ namespace LMS_Project.Controllers
 
         public IActionResult Index()
         {
-
+            ViewBag.CategoryId = _category.GetAllCategories();
+            ViewBag.CourseId = _course.GetAllCourses();
             return View();
         }
+        [Authorize(Roles = "Teacher, Student")]
         public IActionResult OwnCourse()
         {
             var name = User.Identity.Name;
             var useridentity = _userManager.Users.FirstOrDefault(x => x.Email == name);
             var uid = Guid.Parse(useridentity.Id);
             var u = _user.GetAllUserCourses().Where(x => x.UserId == uid);
-            
+
             return View(u);
         }
+        public IActionResult LectureFiles()
+        {
+            var name = User.Identity.Name;
+            var useridentity = _userManager.Users.FirstOrDefault(x => x.Email == name);
+            var uid = Guid.Parse(useridentity.Id);
+            foreach (var item in _user.GetUserLectureFiles())
+            {
+                var u = item.Course.UserCourses.Where(x => x.UserId == uid);
+                return View(u);
+            }
+            return View();
+        }
+            //}
+            //public IActionResult OwnLecture()
+            //{
+            //    var name = User.Identity.Name;
+            //    var useridentity = _userManager.Users.FirstOrDefault(x => x.Email == name);
+            //    var uid = Guid.Parse(useridentity.Id);
+            //    var u = _user.GetUserLecture().Where(x => x.UserId == uid);
 
-        public IActionResult StudentEnrollment(int id)
+            //    return View(u);
+            //}
+
+            public IActionResult StudentEnrollment(int id)
         {
             ViewBag.CategoryId = _category.GetAllCategories();
             var model = new List<Course>(); //emptylist
-            if (User.Identity.IsAuthenticated )
+            if (User.Identity.IsAuthenticated)
             {
 
-               var user= _user.GetAllUsers().SingleOrDefault(x => x.IsTeacher == false && x.UserName == User.Identity.Name);
+                var user = _user.GetAllUsers().SingleOrDefault(x => x.IsTeacher == false && x.UserName == User.Identity.Name);
                 if (id != null && id != 0)
                 {
                     _user.AssignUserCourse(user.Id, id);
@@ -54,12 +80,12 @@ namespace LMS_Project.Controllers
                 }
 
 
-               
+
 
 
 
             }
-         
+
             return View(model);
         }
 
@@ -71,7 +97,7 @@ namespace LMS_Project.Controllers
 
             return View("StudentEnrollment", model);
         }
-            public IActionResult CreateUser()
+        public IActionResult CreateUser()
         {
 
             return View();
@@ -79,27 +105,35 @@ namespace LMS_Project.Controllers
         [HttpPost]
         public IActionResult CreateUser(User user)
         {
-            var name = User.Identity.Name;
-            var useridentity = _userManager.Users.FirstOrDefault(x => x.Email == name);
+            if (User.Identity.Name != null)
+            {
+                var name = User.Identity.Name;
+                var useridentity = _userManager.Users.FirstOrDefault(x => x.Email == name);
 
-            user.Id = Guid.Parse(useridentity.Id);
-            user.UserName = User.Identity.Name.ToString();
-            _user.Add(user);
+                user.Id = Guid.Parse(useridentity.Id);
 
-            return View();
+                user.UserName = User.Identity.Name.ToString();
+                _user.Add(user);
+
+
+            }
+
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         //===============================
         public IActionResult ChooseCourses(Guid userid, int[] courseid, User user)
         {
 
-            ViewBag.UserId = new SelectList(_user.GetAllUsers().Where(x => x.IsTeacher==true), "Id", "UserName");
+            ViewBag.UserId = new SelectList(_user.GetAllUsers().Where(x => x.IsTeacher == true), "Id", "UserName");
             ViewData["CourseId"] = new SelectList(_course.GetAllCourses(), "Id", "Name");
             if (user.IsTeacher == false && userid != null && courseid.Length > 0)
             {
                 foreach (var cid in courseid)
                 {
-                    
+
                     _user.AssignUserCourse(userid, cid);
 
                 }
@@ -107,7 +141,7 @@ namespace LMS_Project.Controllers
             }
 
 
-            
+
 
             var model = _user.GetAllUserCourses();
 

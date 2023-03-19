@@ -141,7 +141,7 @@ namespace LMS_Project.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return RedirectToAction("CreateUser", "Home");
                     }
                 }
                 foreach (var error in result.Errors)
